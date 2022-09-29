@@ -1,5 +1,8 @@
 import 'reflect-metadata'
 import express, { NextFunction, Request, Response } from 'express'
+import 'express-async-errors' //serve para dar erro caso tu mande um obj vazio e para nao dar erro de promessa rejeitada
+import { errors } from 'celebrate'
+
 import cors from 'cors'
 import routes from './routes'
 import AppError from '@shared/errors/AppError'
@@ -11,6 +14,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use(routes)
+app.use(errors()) //erros de validacao de campos
 //global middleware tratamento de error
 app.use(
   (error: Error, request: Request, response: Response, next: NextFunction) => {
