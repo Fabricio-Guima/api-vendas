@@ -13,9 +13,12 @@ interface IRequest {
 }
 class UpdateUserAvatarService {
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
+    console.log("avatarFilename", avatarFilename);
     const userRepository = getCustomRepository(UserRepository);
 
     const user = await userRepository.findById(user_id);
+
+    console.log("user ", user);
 
     if (!user) {
       throw new AppError("User not found.");
@@ -28,11 +31,11 @@ class UpdateUserAvatarService {
       if (userAvatarFileExists) {
         await fs.promises.unlink(userAvatarFilePath);
       }
-
-      user.avatar = avatarFilename;
-
-      await userRepository.save(user);
     }
+
+    user.avatar = avatarFilename;
+    await userRepository.save(user);
+
     return user;
   }
 }
