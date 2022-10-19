@@ -1,37 +1,39 @@
-import 'reflect-metadata'
-import express, { NextFunction, Request, Response } from 'express'
-import 'express-async-errors' //serve para dar erro caso tu mande um obj vazio e para nao dar erro de promessa rejeitada
-import { errors } from 'celebrate'
+import uploadConfig from "@config/upload";
+import "reflect-metadata";
+import express, { NextFunction, Request, Response } from "express";
+import "express-async-errors"; //serve para dar erro caso tu mande um obj vazio e para nao dar erro de promessa rejeitada
+import { errors } from "celebrate";
 
-import cors from 'cors'
-import routes from './routes'
-import AppError from '@shared/errors/AppError'
-import '@shared/typeorm'
+import cors from "cors";
+import routes from "./routes";
+import AppError from "@shared/errors/AppError";
+import "@shared/typeorm";
 
-const app = express()
+const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
+app.use("/files", express.static(uploadConfig.directory));
 
-app.use(routes)
-app.use(errors()) //erros de validacao de campos
+app.use(routes);
+app.use(errors()); //erros de validacao de campos
 //global middleware tratamento de error
 app.use(
   (error: Error, request: Request, response: Response, next: NextFunction) => {
     if (error instanceof AppError) {
       return response.status(error.statusCode).json({
-        status: 'error',
+        status: "error",
         message: error.message,
-      })
+      });
     }
 
     return response.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
-    })
+      status: "error",
+      message: "Internal server error",
+    });
   }
-)
+);
 
 app.listen(3333, () => {
-  console.log(`Server running on port 3333!`)
-})
+  console.log(`Server running on port 3333!`);
+});
