@@ -13,16 +13,6 @@ const upload = multer(uploadConfig);
 
 usersRouter.get("/", isAuthenticated, usersController.index);
 
-// usersRouter.get(
-//   "/:id",
-//   celebrate({
-//     [Segments.PARAMS]: {
-//       id: Joi.string().uuid().required(),
-//     },
-//   }),
-//   usersController.show
-// );
-
 usersRouter.post(
   "/",
   celebrate({
@@ -34,31 +24,6 @@ usersRouter.post(
   }),
   usersController.create
 );
-
-// usersRouter.put(
-//   "/:id",
-//   celebrate({
-//     [Segments.BODY]: {
-//       name: Joi.string().required(),
-//       price: Joi.number().precision(2).required(),
-//       quantity: Joi.number().required(),
-//     },
-//     [Segments.PARAMS]: {
-//       id: Joi.string().uuid().required(),
-//     },
-//   }),
-//   usersController.update
-// );
-
-// usersRouter.delete(
-//   "/:id",
-//   celebrate({
-//     [Segments.PARAMS]: {
-//       id: Joi.string().uuid().required(),
-//     },
-//   }),
-//   usersController.delete
-// );
 
 usersRouter.patch(
   "/avatar",
